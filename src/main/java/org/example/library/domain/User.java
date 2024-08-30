@@ -13,8 +13,8 @@ public class User implements Serializable {
     private final String password;
     private List<Rental> rentals;
 
-    private Function<List<String>, String> loginCreator = userData -> String.join("", userData) + userData.size();
-    private Function<String, String> passwordCreator = email -> email.chars()
+    private transient  Function<List<String>, String> loginCreator = userData -> String.join("", userData) + userData.size();
+    private transient  Function<String, String> passwordCreator = email -> email.chars()
             .filter(c -> Character.isLetterOrDigit(c))
             .mapToObj(Integer::toString)
             .limit(10)

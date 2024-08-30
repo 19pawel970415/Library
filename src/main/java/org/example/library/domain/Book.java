@@ -1,8 +1,9 @@
 package org.example.library.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Book extends Resource {
+public class Book extends Resource implements Serializable {
     private String author;
     private String title;
     private LocalDateTime yearOfPublication;
