@@ -1,6 +1,8 @@
 package org.example.library.domain;
 
-public class Newspaper extends Resource{
+import java.io.Serializable;
+
+public class Newspaper extends Resource implements Serializable {
     private String name;
     private String edition;
 
