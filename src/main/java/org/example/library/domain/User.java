@@ -1,10 +1,13 @@
 package org.example.library.domain;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Getter
 public class User implements Serializable {
     private final String name;
     private final String surname;
