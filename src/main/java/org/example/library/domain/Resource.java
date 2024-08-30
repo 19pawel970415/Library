@@ -1,9 +1,10 @@
 package org.example.library.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @AllArgsConstructor
-public abstract class Resource {
+public abstract class Resource implements Serializable {
     private String id;
 }

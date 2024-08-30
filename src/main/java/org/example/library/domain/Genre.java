@@ -1,6 +1,8 @@
 package org.example.library.domain;
 
-public enum Genre {
+import java.io.Serializable;
+
+public enum Genre implements Serializable {
     FICTION("Fiction"),
     NON_FICTION("Non-fiction"),
     MYSTERY("Mystery"),

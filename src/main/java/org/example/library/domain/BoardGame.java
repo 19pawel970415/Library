@@ -1,6 +1,8 @@
 package org.example.library.domain;
 
-public class BoardGame extends Resource {
+import java.io.Serializable;
+
+public class BoardGame extends Resource implements Serializable {
     private String name;
     private String numberOfPlayers;
 
