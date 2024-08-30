@@ -1,4 +1,1 @@
-package org.example.library.service;
-
-public class UserService {
-}
+package org.example.library.service;import org.example.library.domain.User;import org.example.library.domain.UserGenerator;import java.io.FileNotFoundException;import java.io.FileOutputStream;import java.io.IOException;import java.io.ObjectOutputStream;public class UserService {    public void writeUsers() {        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\48721\\IdeaProjects\\Library\\src\\main\\resources\\users.ser"); ObjectOutputStream oos = new ObjectOutputStream(fos)) {            UserGenerator.generateUsers();            for (User user : UserGenerator.USER_REPO.getUsers()) {                oos.writeObject(user);            }        } catch (FileNotFoundException fnfe) {            fnfe.printStackTrace();            System.err.println(fnfe.getMessage());        } catch (IOException ioe) {            ioe.printStackTrace();            System.err.println(ioe.getMessage());        }    }}
