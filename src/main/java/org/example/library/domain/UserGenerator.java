@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserGenerator {
-    public static void generateUsers() {
+    public static List<User> generateUsers() {
         Book book1 = new Book("1", "J.K. Rowling", "Harry Potter and the Philosopher's Stone", LocalDateTime.of(1997, 6, 26, 0, 0), Genre.FANTASY);
         Book book2 = new Book("2", "George Orwell", "1984", LocalDateTime.of(1949, 6, 8, 0, 0), Genre.DYSTOPIAN);
         Book book3 = new Book("3", "J.R.R. Tolkien", "The Hobbit", LocalDateTime.of(1937, 9, 21, 0, 0), Genre.FANTASY);
@@ -50,8 +50,6 @@ public class UserGenerator {
                 new Rental("charlie.davis", newspaper1)
         )));
 
-        for (User user : users) {
-            System.out.println(user);
-        }
+        return users;
     }
 }
