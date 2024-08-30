@@ -1,6 +1,7 @@
 package org.example.library.service;
 
 import org.example.library.db.UserRepo;
+import org.example.library.domain.UserGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,12 +9,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 public class UserService {
-    private UserRepo userRepo;
 
     public void writeUsers() {
         try (FileOutputStream fos = new FileOutputStream("users.ser")) {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            userRepo.getUsers().stream()
+            UserGenerator.USER_REPO.getUsers().stream()
                     .forEach(u -> {
                         try {
                             oos.writeObject(u);
