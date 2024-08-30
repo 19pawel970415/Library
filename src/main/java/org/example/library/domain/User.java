@@ -1,19 +1,23 @@
 package org.example.library.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
 @Getter
+@Setter
 public class User implements Serializable {
-    private final String name;
-    private final String surname;
-    private final String email;
-    private final String login;
-    private final String password;
+    private String name;
+    private String surname;
+    private String email;
+    private String login;
+    private String password;
     private List<Rental> rentals;
 
     private transient  Function<List<String>, String> loginCreator = userData -> String.join("", userData) + userData.size();
