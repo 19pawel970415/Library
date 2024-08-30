@@ -1,10 +1,12 @@
 package org.example.library.domain;
 
+import lombok.Getter;
 import org.example.library.db.UserRepo;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 public class UserGenerator {
 
     private static UserRepo userRepo = new UserRepo();
