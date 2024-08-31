@@ -1,4 +1,4 @@
 package org.example.library.service;
 
-public class RentalService {
+public class RentalService implements RentalServiceInterface {
 }
