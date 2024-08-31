@@ -8,10 +8,9 @@ public class Book extends Resource implements Serializable {
     private LocalDateTime yearOfPublication;
     private Genre genre;
 
-    public Book(String id, String author, String title, LocalDateTime yearOfPublication, Genre genre) {
-        super(id);
+    public Book(String name, String id, String author, LocalDateTime yearOfPublication, Genre genre) {
+        super(name, id);
         this.author = author;
-        this.title = title;
         this.yearOfPublication = yearOfPublication;
         this.genre = genre;
     }
