@@ -23,7 +23,8 @@ public enum Genre implements Serializable {
     POETRY("Poetry"),
     GRAPHIC_NOVEL("Graphic Novel"),
     TRUE_CRIME("True Crime"),
-    RELIGION("Religion");
+    RELIGION("Religion"),
+    CLASSIC("Classic");
 
     private final String description;
 
