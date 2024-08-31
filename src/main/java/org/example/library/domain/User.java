@@ -35,4 +35,12 @@ public class User implements Serializable {
         this.password = passwordCreator.apply(email);
         this.rentals = rentals;
     }
+
+    public User(String name, String surname, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.login = loginCreator.apply(List.of(name, surname));
+        this.password = passwordCreator.apply(email);
+    }
 }
