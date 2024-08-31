@@ -22,34 +22,34 @@ public class UserGenerator {
         Newspaper newspaper2 = new Newspaper("8", "The Guardian", "Weekend Edition");
         Newspaper newspaper3 = new Newspaper("9", "The New York Times", "Sunday Edition");
 
-        USER_REPO.getUsers().add(new User("John", "Doe", "john.doe@example.com", List.of(
-                new Rental("john.doe", book1),
-                new Rental("john.doe", boardGame1),
-                new Rental("john.doe", newspaper1)
-        )));
+        User user1 = new User("John", "Doe", "john.doe@example.com");
 
-        USER_REPO.getUsers().add(new User("Jane", "Smith", "jane.smith@example.com", List.of(
-                new Rental("jane.smith", book2),
-                new Rental("jane.smith", boardGame2),
-                new Rental("jane.smith", newspaper2)
-        )));
+        Rental rental1 = new Rental(user1.getLogin(), book1);
+        Rental rental2 = new Rental(user1.getLogin(), boardGame1);
+        Rental rental3 = new Rental(user1.getLogin(), newspaper1);
 
-        USER_REPO.getUsers().add(new User("Alice", "Johnson", "alice.johnson@example.com", List.of(
-                new Rental("alice.johnson", book3),
-                new Rental("alice.johnson", boardGame3),
-                new Rental("alice.johnson", newspaper3)
-        )));
+        user1.setRentals(List.of(rental1, rental2, rental3));
 
-        USER_REPO.getUsers().add(new User("Bob", "Brown", "bob.brown@example.com", List.of(
-                new Rental("bob.brown", book1),
-                new Rental("bob.brown", boardGame2),
-                new Rental("bob.brown", newspaper3)
-        )));
+        USER_REPO.getUsers().add(user1);
 
-        USER_REPO.getUsers().add(new User("Charlie", "Davis", "charlie.davis@example.com", List.of(
-                new Rental("charlie.davis", book2),
-                new Rental("charlie.davis", boardGame1),
-                new Rental("charlie.davis", newspaper1)
-        )));
+        User user2 = new User("Jane", "Smith", "jane.smith@example.com");
+
+        Rental rental4 = new Rental(user2.getLogin(), book2);
+        Rental rental5 = new Rental(user2.getLogin(), boardGame2);
+        Rental rental6 = new Rental(user2.getLogin(), newspaper2);
+
+        user2.setRentals(List.of(rental4, rental5, rental6));
+
+        USER_REPO.getUsers().add(user2);
+
+        User user3 = new User("Alice", "Johnson", "alice.johnson@example.com");
+
+        Rental rental7 = new Rental(user3.getLogin(), book3);
+        Rental rental8 = new Rental(user3.getLogin(), boardGame3);
+        Rental rental9 = new Rental(user3.getLogin(), newspaper3);
+
+        user3.setRentals(List.of(rental7, rental8, rental9));
+
+        USER_REPO.getUsers().add(user3);
     }
 }
