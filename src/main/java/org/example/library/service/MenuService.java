@@ -6,11 +6,12 @@ import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class MenuService {
+public class MenuService implements MenuServiceInterface {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final UserService USER_SERVICE = new UserService();
+    private static final UserServiceInterface USER_SERVICE = new UserService();
     private static final User USER = new User();
+    private static final UserValidatorInterface USER_VALIDATOR = new UserValidator();
 
     private static void showLoginRequest() {
         System.out.println("Welcome, enter your login:");
@@ -20,7 +21,7 @@ public class MenuService {
         System.out.println("Enter password:");
     }
 
-
+    @Override
     public void showMenu() {
         boolean shouldContinue = true;
         do {
@@ -28,7 +29,7 @@ public class MenuService {
             String login = SCANNER.nextLine();
             showPasswordRequest();
             String password = SCANNER.nextLine();
-            if (UserValidator.validateUser(login, password)) {
+            if (USER_VALIDATOR.validateUser(login, password)) {
                 Optional<User> loggedInUser = USER_SERVICE.readUsers().stream()
                         .filter(u -> u.getLogin().equals(login) && u.getPassword().equals(password))
                         .findFirst();
