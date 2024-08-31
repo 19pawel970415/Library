@@ -5,9 +5,8 @@ import java.io.Serializable;
 public class BoardGame extends Resource implements Serializable {
     private String numberOfPlayers;
 
-    public BoardGame(String id, String name, String numberOfPlayers) {
-        super(id);
-        this.name = name;
+    public BoardGame(String name, String id, String numberOfPlayers) {
+        super(name, id);
         this.numberOfPlayers = numberOfPlayers;
     }
 }
