@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 public class Book extends Resource implements Serializable {
     private String author;
-    private String title;
     private LocalDateTime yearOfPublication;
     private Genre genre;
 
