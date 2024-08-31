@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface UserServiceInterface {
     void writeUsers();
+    void writeNewUsers(List<User> users);
     List<User> readUsers();
 }
