@@ -1,5 +1,6 @@
 package org.example.library.domain;
 
+import org.example.library.db.RentalRepo;
 import org.example.library.db.UserRepo;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.List;
 public class UserGenerator {
 
     public static final UserRepo USER_REPO = new UserRepo();
+    public static final RentalRepo RENTAL_REPO = new RentalRepo();
 
     public static void generateUsers() {
         Book book1 = new Book("1", "J.K. Rowling", "Harry Potter and the Philosopher's Stone", LocalDateTime.of(1997, 6, 26, 0, 0), Genre.FANTASY);
@@ -31,6 +33,9 @@ public class UserGenerator {
         user1.setRentals(List.of(rental1, rental2, rental3));
 
         USER_REPO.getUsers().add(user1);
+        RENTAL_REPO.getRentals().add(rental1);
+        RENTAL_REPO.getRentals().add(rental2);
+        RENTAL_REPO.getRentals().add(rental3);
 
         User user2 = new User("Jane", "Smith", "jane.smith@example.com");
 
@@ -41,6 +46,9 @@ public class UserGenerator {
         user2.setRentals(List.of(rental4, rental5, rental6));
 
         USER_REPO.getUsers().add(user2);
+        RENTAL_REPO.getRentals().add(rental4);
+        RENTAL_REPO.getRentals().add(rental5);
+        RENTAL_REPO.getRentals().add(rental6);
 
         User user3 = new User("Alice", "Johnson", "alice.johnson@example.com");
 
@@ -51,5 +59,8 @@ public class UserGenerator {
         user3.setRentals(List.of(rental7, rental8, rental9));
 
         USER_REPO.getUsers().add(user3);
+        RENTAL_REPO.getRentals().add(rental7);
+        RENTAL_REPO.getRentals().add(rental8);
+        RENTAL_REPO.getRentals().add(rental9);
     }
 }
