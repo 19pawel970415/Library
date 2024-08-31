@@ -8,5 +8,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 public abstract class Resource implements Serializable {
+    private String name;
     private String id;
 }
