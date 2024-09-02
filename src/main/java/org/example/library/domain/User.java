@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ public class User implements Serializable {
     private String email;
     private String login;
     private String password;
-    private List<Rental> rentals;
+    private List<Rental> rentals = new ArrayList<>();
 
     private transient  Function<List<String>, String> loginCreator = userData -> String.join("", userData) + userData.size();
     private transient  Function<String, String> passwordCreator = email -> email.chars()
@@ -33,7 +34,7 @@ public class User implements Serializable {
         this.email = email;
         this.login = loginCreator.apply(List.of(name, surname));
         this.password = passwordCreator.apply(email);
-        this.rentals = rentals;
+        this.rentals = new ArrayList<>(rentals);
     }
 
     public User(String name, String surname, String email) {
@@ -42,5 +43,6 @@ public class User implements Serializable {
         this.email = email;
         this.login = loginCreator.apply(List.of(name, surname));
         this.password = passwordCreator.apply(email);
+        this.rentals = new ArrayList<>();
     }
 }
