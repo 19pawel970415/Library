@@ -126,7 +126,7 @@ public class MenuService implements MenuServiceInterface {
             try {
                 Integer option = Integer.parseInt(SCANNER.nextLine());
                 switch (option) {
-                    case 1 -> USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
+                    case 1 -> showUsersRentals();
                     case 2 -> rent();
                     case 3 -> returnResource();
                     case 4 -> sayGoodbyeAndCloeTheApp();
@@ -137,11 +137,18 @@ public class MenuService implements MenuServiceInterface {
         }
     }
 
+    private static void showUsersRentals() {
+        if (USER.getRentals().size() != 0) {
+            USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
+        } else {
+            System.out.println("Currently you have no rentals.");
+        }
+    }
+
     private static void returnResource() {
         while (true) {
             System.out.println("What do you want to return? Choose from the list by entering the name of the resource or enter EXIT if you do not want to return anything.");
-            USER.getRentals().stream()
-                    .forEach(r -> System.out.println(r.getResource().getName()));
+            showUsersRentals();
             String chosenResource = SCANNER.nextLine();
             if (chosenResource.equalsIgnoreCase("EXIT")) {
                 break;
