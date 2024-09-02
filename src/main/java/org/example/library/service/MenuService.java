@@ -1,15 +1,19 @@
 package org.example.library.service;
 
+import org.example.library.domain.Rental;
+import org.example.library.domain.Resource;
 import org.example.library.domain.User;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class MenuService implements MenuServiceInterface {
 
     private static final Scanner SCANNER = new Scanner(System.in);
     private static final UserServiceInterface USER_SERVICE = new UserService();
+    private static final ResourceServiceInterface RESOURCE_SERVICE = new ResourceService();
     private static final User USER = new User();
     private static final UserValidatorInterface USER_VALIDATOR = new UserValidator();
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -122,13 +126,47 @@ public class MenuService implements MenuServiceInterface {
             try {
                 Integer option = Integer.parseInt(SCANNER.nextLine());
                 switch (option) {
-                    case 1 ->
-                            USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
-
+                    case 1 -> USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
+                    case 2 -> rent();
                     case 4 -> sayGoodbyeAndCloeTheApp();
                 }
             } catch (InputMismatchException ime) {
                 System.err.println("You did not enter a number, you've been logged out. Log in and try again later with numbers");
+            }
+        }
+    }
+
+    private static void rent() {
+        while (true) {
+            System.out.println("What do you want to rent? Choose from the list by entering the name of the resource or enter EXIT if you do not want to rent anything.");
+            RESOURCE_SERVICE.readResources().stream()
+                    .forEach(r -> System.out.println(r.getName()));
+            String chosenResource = SCANNER.nextLine();
+            if (chosenResource.equalsIgnoreCase("EXIT")) {
+                break;
+            } else {
+                Optional<Resource> wantedResource = RESOURCE_SERVICE.readResources().stream()
+                        .filter(r -> r.getName().equals(chosenResource))
+                        .findAny();
+                if (wantedResource.isPresent()) {
+                    List<Rental> rentals = new ArrayList<>(USER.getRentals());
+                    rentals.add(new Rental(USER.getLogin(), wantedResource.get()));
+                    USER.setRentals(rentals);
+                    List<User> users = USER_SERVICE.readUsers();
+                    List<User> updatedUsers = users.stream()
+                            .filter(u -> !u.getLogin().equals(USER.getLogin()))
+                            .collect(Collectors.toList());
+                    updatedUsers.add(USER);
+                    USER_SERVICE.writeNewUsers(updatedUsers);
+                    List<Resource> resources = RESOURCE_SERVICE.readResources();
+                    List<Resource> updatedResources = resources.stream()
+                            .filter(r -> !r.getName().equals(wantedResource.get().getName()))
+                            .collect(Collectors.toList());
+                    RESOURCE_SERVICE.writeNewResources(updatedResources);
+                    break;
+                } else {
+                    System.out.println("Invalid input. No such resource on the list! Try again.");
+                }
             }
         }
     }
