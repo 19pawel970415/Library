@@ -128,10 +128,47 @@ public class MenuService implements MenuServiceInterface {
                 switch (option) {
                     case 1 -> USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
                     case 2 -> rent();
+                    case 3 -> returnResource();
                     case 4 -> sayGoodbyeAndCloeTheApp();
                 }
             } catch (InputMismatchException ime) {
                 System.err.println("You did not enter a number, you've been logged out. Log in and try again later with numbers");
+            }
+        }
+    }
+
+    private static void returnResource() {
+        while (true) {
+            System.out.println("What do you want to return? Choose from the list by entering the name of the resource or enter EXIT if you do not want to return anything.");
+            USER.getRentals().stream()
+                    .forEach(r -> System.out.println(r.getResource().getName()));
+            String chosenResource = SCANNER.nextLine();
+            if (chosenResource.equalsIgnoreCase("EXIT")) {
+                break;
+            } else {
+                Optional<Resource> toReturnResource = USER.getRentals().stream()
+                        .map(r -> r.getResource())
+                        .filter(r -> r.getName().equals(chosenResource))
+                        .findAny();
+                if (toReturnResource.isPresent()) {
+                    List<Rental> rentals = new ArrayList<>(USER.getRentals());
+                    List<Rental> updatedRentals = rentals.stream()
+                            .filter(r -> !r.getResource().getName().equals(toReturnResource.get().getName()))
+                            .collect(Collectors.toList());
+                    USER.setRentals(updatedRentals);
+                    List<User> users = USER_SERVICE.readUsers();
+                    List<User> updatedUsers = users.stream()
+                            .filter(u -> !u.getLogin().equals(USER.getLogin()))
+                            .collect(Collectors.toList());
+                    updatedUsers.add(USER);
+                    USER_SERVICE.writeNewUsers(updatedUsers);
+                    List<Resource> resources = RESOURCE_SERVICE.readResources();
+                    resources.add(toReturnResource.get());
+                    RESOURCE_SERVICE.writeNewResources(resources);
+                    break;
+                } else {
+                    System.out.println("Invalid input. No such resource on the list! Try again.");
+                }
             }
         }
     }
