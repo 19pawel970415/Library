@@ -15,6 +15,7 @@ public class ResourceService implements ResourceServiceInterface {
             ResourcesGenerator.generateResources();
             for (Resource resource : ResourcesGenerator.RESOURCE_REPO.getResources()) {
                 oos.writeObject(resource);
+                oos.flush();
             }
         } catch (FileNotFoundException fnfe) {
             fnfe.printStackTrace();
