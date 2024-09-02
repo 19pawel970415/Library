@@ -15,10 +15,48 @@ public class MenuService implements MenuServiceInterface {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
+    @Override
+    public void showMenu() {
+        boolean shouldContinue = true;
+        do {
+            showRegisterOrLoginRequest();
+            Integer logSingInOption = Integer.parseInt(SCANNER.nextLine());
+            switch (logSingInOption) {
+                case 1:
+                    register();
+                case 2:
+                    showLoginRequest();
+                    String login = SCANNER.nextLine();
+                    showPasswordRequest();
+                    String password = SCANNER.nextLine();
+                    if (USER_VALIDATOR.validateUser(login, password)) {
+                        Optional<User> loggingInUser = findLoggingInUser(login, password);
+                        if (loggingInUser.isPresent()) {
+                            setUser(loggingInUser);
+                            getTheChoiceFromUser();
+                        } else {
+                            System.out.println("Something went wrong, come back later :(");
+                        }
+                    } else {
+                        System.out.println("No such user");
+                    }
+                    break;
+            }
+        } while (true);
+    }
+
     private static void showRegisterOrLoginRequest() {
         System.out.println("Hello! Chose: ");
         System.out.println("1. To register");
         System.out.println("2. To log in");
+    }
+
+    private static void register() {
+        List<String> nameSurnameEmail = getNameSurnameEmail();
+        User user = new User(nameSurnameEmail.get(0), nameSurnameEmail.get(1), nameSurnameEmail.get(2));
+        List<User> users = USER_SERVICE.readUsers();
+        users.add(user);
+        USER_SERVICE.writeNewUsers(users);
     }
 
     private static List<String> getNameSurnameEmail() {
@@ -55,67 +93,48 @@ public class MenuService implements MenuServiceInterface {
         System.out.println("Enter password:");
     }
 
+    private static Optional<User> findLoggingInUser(String login, String password) {
+        return USER_SERVICE.readUsers().stream()
+                .filter(u -> u.getLogin().equals(login) && u.getPassword().equals(password))
+                .findFirst();
+    }
+
+    private static void setUser(Optional<User> loggingInUser) {
+        USER.setName(loggingInUser.get().getName());
+        USER.setSurname(loggingInUser.get().getSurname());
+        USER.setEmail(loggingInUser.get().getEmail());
+        USER.setLogin(loggingInUser.get().getLogin());
+        USER.setPassword(loggingInUser.get().getPassword());
+        USER.setRentals(loggingInUser.get().getRentals());
+    }
+
+    private static void showLoggedInUserMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Show my rentals");
+        System.out.println("2. Rent");
+        System.out.println("3. Return");
+        System.out.println("4. Exit");
+    }
+
+    private static void getTheChoiceFromUser() {
+        while (true) {
+            showLoggedInUserMenu();
+            try {
+                Integer option = Integer.parseInt(SCANNER.nextLine());
+                switch (option) {
+                    case 1 ->
+                            USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
+
+                    case 4 -> sayGoodbyeAndCloeTheApp();
+                }
+            } catch (InputMismatchException ime) {
+                System.err.println("You did not enter a number, you've been logged out. Log in and try again later with numbers");
+            }
+        }
+    }
+
     private static void sayGoodbyeAndCloeTheApp() {
         System.out.println("See you soon");
         System.exit(0);
-    }
-
-    @Override
-    public void showMenu() {
-        boolean shouldContinue = true;
-        do {
-            showRegisterOrLoginRequest();
-            Integer logSingInOption = Integer.parseInt(SCANNER.nextLine());
-            switch (logSingInOption) {
-                case 1:
-                    List<String> nameSurnameEmail = getNameSurnameEmail();
-                    User user = new User(nameSurnameEmail.get(0), nameSurnameEmail.get(1), nameSurnameEmail.get(2));
-                    List<User> users = USER_SERVICE.readUsers();
-                    users.add(user);
-                    USER_SERVICE.writeNewUsers(users);
-                case 2:
-                    showLoginRequest();
-                    String login = SCANNER.nextLine();
-                    showPasswordRequest();
-                    String password = SCANNER.nextLine();
-                    if (USER_VALIDATOR.validateUser(login, password)) {
-                        Optional<User> loggedInUser = USER_SERVICE.readUsers().stream()
-                                .filter(u -> u.getLogin().equals(login) && u.getPassword().equals(password))
-                                .findFirst();
-                        if (loggedInUser.isPresent()) {
-                            USER.setName(loggedInUser.get().getName());
-                            USER.setSurname(loggedInUser.get().getSurname());
-                            USER.setEmail(loggedInUser.get().getEmail());
-                            USER.setLogin(loggedInUser.get().getLogin());
-                            USER.setPassword(loggedInUser.get().getPassword());
-                            USER.setRentals(loggedInUser.get().getRentals());
-                            while (true) {
-                                System.out.println("Menu:");
-                                System.out.println("1. Show my rentals");
-                                System.out.println("2. Rent");
-                                System.out.println("3. Return");
-                                System.out.println("4. Exit");
-                                try {
-                                    Integer option = Integer.parseInt(SCANNER.nextLine());
-                                    switch (option) {
-                                        case 1 ->
-                                                USER.getRentals().stream().forEach(r -> System.out.println(r.getResource().getName()));
-
-                                        case 4 -> sayGoodbyeAndCloeTheApp();
-                                    }
-                                } catch (InputMismatchException ime) {
-                                    System.err.println("You did not enter a number, you've been logged out. Log in and try again later with numbers");
-                                }
-                            }
-                        } else {
-                            System.out.println("Something went wrong, come back later :(");
-                        }
-                        shouldContinue = false;
-                    } else {
-                        System.out.println("No such user");
-                    }
-                    break;
-            }
-        } while (shouldContinue);
     }
 }
